@@ -1,0 +1,50 @@
+{
+    "manifest_version": 3,
+    "name": "ADHD-Friendly Text Enhancer",
+    "version": "1.0",
+    "description": "Enhance article readability for ADHD by highlighting lines and boldening letters.",
+    "permissions": [
+        "activeTab"
+    ],
+    "commands": {
+        "boldening": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+Y",
+                "mac": "Command+Shift+Y"
+            },
+            "description": "Bolden letters"
+        },
+        "highlighting": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+H",
+                "mac": "Command+Shift+H"
+            },
+            "description": "Highlight lines"
+        }
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "icon.png"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [{
+        "matches": [
+            "<all_urls>"
+        ],
+        "js": [
+            "popup.js",
+            "content.js"
+        ],
+        "css": [
+            "styles.css"
+        ]
+    }],
+    "icons": {
+        "48": "icon.png",
+        "96": "icon.png",
+        "128": "icon.png",
+        "256": "icon.png"
+    }
+}

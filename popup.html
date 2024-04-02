@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Editor Extension</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .highlight-color-picker {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="popup.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Text Editor Extension</h1>
+        <button id="boldFirstLetters">Bold First Letters</button>
+        <button id="highlightLines">Highlight Every Other Line</button>
+        <div class="highlight-color-picker">
+            <label for="highlightColor">Highlight Color:</label>
+            <input type="color" id="highlightColor" value="#ffcc00">
+        </div>
+    </div>
+
+</body>
+
+</html>

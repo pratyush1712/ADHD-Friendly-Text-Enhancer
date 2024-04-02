@@ -17,4 +17,4 @@ This is a Chrome extension that enhances the readability of text on webpages. It
 ## Screenshots
 ![Popup Options](screenshots/popup.png)
 ![Boldened Text](screenshots/bold.png)
-![Highlighted Text](screenshots/highligh.png)
+![Highlighted Text](screenshots/highlight.png)

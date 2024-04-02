@@ -1,4 +1,4 @@
-# <img src="icon.ong" style="width:15px;"> ADHD-Friendly Text Enhancer Extension
+# <img src="icon.png" style="width:15px;"> ADHD-Friendly Text Enhancer Extension
 
 ## Description
 This is a Chrome extension that enhances the readability of text on webpages. It is designed to help people with ADHD read more efficiently by improving focus and comprehension. The extension uses a combination of text formatting and color coding to make text more visually appealing and easier to read.

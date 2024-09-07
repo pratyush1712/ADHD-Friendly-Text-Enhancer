@@ -20,7 +20,7 @@ chrome.commands.onCommand.addListener((command) => {
             (tabs) => {
                 chrome.tabs.sendMessage(tabs[0].id, {
                     action: "highlightLines",
-                    color: "#FFFF00",
+                    color: "#FFCD00",
                     width: 75,
                 });
             }

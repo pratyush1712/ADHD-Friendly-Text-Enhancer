@@ -19,6 +19,8 @@ const modifyTextNodes = (node, modificationFunction) => {
 };
 
 const applyBoldeningToSelection = () => {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
     const fragment = range.extractContents();
     const div = document.createElement("div");
     div.appendChild(fragment);

@@ -18,10 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var highlightButton = document.getElementById("highlightLines");
     var colorPicker = document.getElementById("highlightColor");
-    var width = document.getElementById("highlightWidth").value;
+    var widthPicker = document.getElementById("highlightWidth");
     if (highlightButton && colorPicker) {
         highlightButton.addEventListener("click", () => {
             const color = colorPicker.value;
+            const width = widthPicker.value;
             chrome.tabs.query(
                 {
                     active: true,

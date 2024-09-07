@@ -1,5 +1,5 @@
 const getTextWidth = (text, font) => {
-    const canvas = getTextWidth1.canvas || (getTextWidth1.canvas = document.createElement("canvas"));
+    const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
     const context = canvas.getContext("2d");
     context.font = font;
     const metrics = context.measureText(text);

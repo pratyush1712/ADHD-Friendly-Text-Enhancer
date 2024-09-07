@@ -1,48 +1,18 @@
-// Utility functions
-function hexToRgb(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-    ] : null;
-}
-
-const getTextWidth = (() => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    return (text, font) => {
-        context.font = font || window.getComputedStyle(document.body).font;
-        return context.measureText(text).width;
-    };
-})();
-
-const getContrastColor = (bgColor) => {
-    const rgb = hexToRgb(bgColor);
-    const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
-    return brightness > 128 ? 'black' : 'white';
+const getTextWidth = (text, font) => {
+    const canvas = getTextWidth1.canvas || (getTextWidth1.canvas = document.createElement("canvas"));
+    const context = canvas.getContext("2d");
+    context.font = font;
+    const metrics = context.measureText(text);
+    return metrics.width;
 };
 
-function extractMainContent() {
-    const contentElements = document.querySelectorAll('p, li, div:not(:empty)');
+const getContrastColor = (bgColor) => {
+    let color = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
+    let r = parseInt(color.substring(0, 2), 16);
+    let g = parseInt(color.substring(2, 4), 16);
+    let b = parseInt(color.substring(4, 6), 16);
 
-    let extractedContent = [];
+    let luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
-    contentElements.forEach(element => {
-        if (element.closest('header, nav, footer, aside, [class*="ad"], [id*="ad"]')) return
-
-        let text = element.textContent.trim();
-
-        // if (text.length < 10) {
-        //     return;
-        // }
-
-        extractedContent.push(text);
-    });
-
-    const allText = extractedContent.join(' ');
-
-    const words = allText.split(/\s+/);
-
-    return words;
-}
+    return luminance > 0.5 ? "#000000" : "#FFFFFF";
+};

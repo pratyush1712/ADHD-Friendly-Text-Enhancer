@@ -3,9 +3,7 @@
     "name": "ADHD-Friendly Text Enhancer",
     "version": "1.0",
     "description": "Enhance article readability for ADHD by highlighting lines and boldening letters.",
-    "permissions": [
-        "activeTab"
-    ],
+    "permissions": ["activeTab"],
     "commands": {
         "boldening": {
             "suggested_key": {
@@ -31,18 +29,9 @@
     },
     "content_scripts": [
         {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "popup.js",
-                "content.js",
-                "utils.js",
-                "main.js"
-            ],
-            "css": [
-                "styles.css"
-            ]
+            "matches": ["<all_urls>"],
+            "js": ["popup.js", "content.js", "utils.js", "highlight.js", "bolden.js"],
+            "css": ["styles.css"]
         }
     ],
     "icons": {

@@ -16,8 +16,8 @@
         },
         "highlighting": {
             "suggested_key": {
-                "default": "Ctrl+Shift+H",
-                "mac": "Command+Shift+H"
+                "default": "Ctrl+Shift+L",
+                "mac": "Command+Shift+L"
             },
             "description": "Highlight lines"
         }
@@ -29,18 +29,22 @@
     "background": {
         "service_worker": "background.js"
     },
-    "content_scripts": [{
-        "matches": [
-            "<all_urls>"
-        ],
-        "js": [
-            "popup.js",
-            "content.js"
-        ],
-        "css": [
-            "styles.css"
-        ]
-    }],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "popup.js",
+                "content.js",
+                "utils.js",
+                "main.js"
+            ],
+            "css": [
+                "styles.css"
+            ]
+        }
+    ],
     "icons": {
         "48": "icon.png",
         "96": "icon.png",

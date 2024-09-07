@@ -1,97 +1,64 @@
-function boldFirstLettersOfEachWord(selectedText) {
-    return selectedText.split(' ').map(word => {
-        const boldedLetters = Math.ceil(word.length * 0.3);
-        return word.split('').map((letter, index) => {
-            if (index < boldedLetters) return `<b>${letter}</b>`;
-            else return letter;
-        }).join('');
-    }).join(' ');
-}
-
-
-function getTextWidth(text) {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    context.font = window.getComputedStyle(document.body).getPropertyValue('font');
-    return context.measureText(text).width;
-}
-
-function highlightEveryOtherLine(selectedText, color) {
-    const pageWidth = window.innerWidth / 2;
-    const words = selectedText.split(' ');
-    const lines = [];
-    let currentLine = '';
-
-    for (let i = 0; i < words.length; i++) {
-        const word = words[i];
-        const newLine = currentLine + ' ' + word;
-        if (getTextWidth(newLine) > pageWidth) {
-            lines.push(currentLine);
-            currentLine = word;
-        } else {
-            currentLine = newLine;
-        }
-    }
-    lines.push(currentLine);
-
-    const textColor = window.getComputedStyle(document.body).getPropertyValue('color');
-
-    if (textColor === 'rgb(255, 255, 255)') {
-        var newTextColor = 'black';
+const modifyTextNodes = (node, modificationFunction) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+        const span = document.createElement('span');
+        span.innerHTML = modificationFunction(node.textContent);
+        node.parentNode.replaceChild(span, node);
     } else {
-        var newTextColor = textColor;
-    }
-
-    return lines.map((line, index) => {
-        if (index % 2 === 0) {
-            return `<span style="background-color: ${color}; color: ${newTextColor}; margin-bottom: 12px">${line}</span>`;
-        } else {
-            return line;
+        for (let i = 0; i < node.childNodes.length; i++) {
+            modifyTextNodes(node.childNodes[i], modificationFunction);
         }
-    }).join(' ');
-}
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "boldFirstLetters") {
-        handleTextModification(request, boldFirstLettersOfEachWord);
-    } else if (request.action === "highlightLines") {
-        handleTextModification(request, highlightEveryOtherLine, request.color);
     }
-});
+};
+
+// Function to handle DOM modification
+const modifyDOM = (range, modificationFunction, additionalParameter = null) => {
+    const fragment = range.extractContents();
+    const div = document.createElement('div');
+    div.appendChild(fragment);
+
+    const modifiedText = modificationFunction(div.textContent, additionalParameter);
+    div.innerHTML = modifiedText;
+
+    const newFragment = document.createDocumentFragment();
+    while (div.firstChild) {
+        newFragment.appendChild(div.firstChild);
+    }
+
+    range.insertNode(newFragment);
+};
 
 
-function handleTextModification(request, modificationFunction, additionalParameter = null) {
+// Message listener
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const selection = window.getSelection();
     if (!selection.rangeCount) {
         sendResponse({
-            success: false
+            success: false,
+            error: 'No text selected'
         });
-        return false;
+        return;
     }
 
     const range = selection.getRangeAt(0);
-    let documentFragment = range.cloneContents();
 
-    modifyDocumentFragment(documentFragment, modificationFunction, additionalParameter);
-
-    range.deleteContents();
-    range.insertNode(documentFragment);
-
-    sendResponse({
-        success: true
-    });
-    return true;
-}
-
-function modifyDocumentFragment(documentFragment, modificationFunction, additionalParameter) {
-    for (let i = 0; i < documentFragment.children.length; i++) {
-        const child = documentFragment.children[i];
-        const text = child.textContent;
-        const modifiedText = additionalParameter ?
-            modificationFunction(text, additionalParameter) :
-            modificationFunction(text);
-        const newNode = document.createElement(child.tagName);
-        newNode.innerHTML = modifiedText;
-        documentFragment.replaceChild(newNode, child);
+    try {
+        switch (request.action) {
+            case 'boldFirstLetters':
+                modifyDOM(range, boldFirstLettersOfEachWord);
+                break;
+            case 'highlightLines':
+                modifyDOM(range, highlightEveryOtherLine, request.color);
+                break;
+            default:
+                throw new Error('Unknown action');
+        }
+        sendResponse({
+            success: true
+        });
+    } catch (error) {
+        sendResponse({
+            success: false,
+            error: error.message
+        });
     }
-}
+});
